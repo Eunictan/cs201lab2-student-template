@@ -112,21 +112,15 @@ public class SinglyLinkedList<E extends Comparable<E>> {
             curr = curr.getNext();
         }
 
-        boolean[] used = new boolean[size];
+        Integer[] idx = new Integer[size];
+        for (int i = 0; i < size; i++) idx[i] = i;
+        Arrays.sort(idx, (a, b) -> arr[a].getElement().compareTo(arr[b].getElement()));
 
-        for (int i = 0; i < size/2; i++) {
-            int minIdx = -1;
-            int maxIdx = -1;
-            
-            for (int j = 0; j < size; j++) {
-                if (used[j]) continue;
-                E element = arr[j].getElement();
-                if (minIdx == -1 || element.compareTo(arr[minIdx].getElement()) < 0) {minIdx = j;}
-                if (maxIdx == -1 || element.compareTo(arr[maxIdx].getElement()) > 0) {maxIdx = j;}
-            }
-
-            used[minIdx] = true;
-            used[maxIdx] = true;
+        int left = 0;
+        int right = size - 1;
+        while (left < right) {
+            int minIdx = idx[left++];
+            int maxIdx = idx[right--];
 
             Node<E> temp = arr[minIdx];
             arr[minIdx] = arr[maxIdx];
