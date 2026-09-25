@@ -101,8 +101,44 @@ public class SinglyLinkedList<E extends Comparable<E>> {
 
     // write your codes here
     public void swap(){
+        if (size <= 1) return;
         
+        @SuppressWarnings("unchecked")
+        Node<E>[] arr = (Node<E>[]) new Node[size];
+        
+        Node<E> curr = head;
+        for (int i = 0; i < size; i++) {
+            arr[i] = curr;
+            curr = curr.getNext();
+        }
 
+        boolean[] used = new boolean[size];
+
+        for (int i = 0; i < size/2; i++) {
+            int minIdx = -1;
+            int maxIdx = -1;
+            
+            for (int j = 0; j < size; j++) {
+                if (used[j]) continue;
+                E element = arr[j].getElement();
+                if (minIdx == -1 || element.compareTo(arr[minIdx].getElement()) < 0) {minIdx = j;}
+                if (maxIdx == -1 || element.compareTo(arr[maxIdx].getElement()) > 0) {maxIdx = j;}
+            }
+
+            used[minIdx] = true;
+            used[maxIdx] = true;
+
+            Node<E> temp = arr[minIdx];
+            arr[minIdx] = arr[maxIdx];
+            arr[maxIdx] = temp;
+        }
+
+        head = arr[0];
+        for (int i = 0; i < size - 1; i++) {
+            arr[i].setNext(arr[i + 1]);
+        }
+        tail = arr[size - 1];
+        tail.setNext(null);
     }
    
 }
